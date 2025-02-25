@@ -171,13 +171,13 @@ int main(void)
   /* Enable Block Data Update */
   h3lis331dl_block_data_update_set(&dev_ctx, PROPERTY_ENABLE);
   /* Set full scale */
-  h3lis331dl_full_scale_set(&dev_ctx, H3LIS331DL_100g);
+  h3lis331dl_full_scale_set(&dev_ctx, H3LIS331DL_400g);
   /* Configure filtering chain */
   h3lis331dl_hp_path_set(&dev_ctx, H3LIS331DL_HP_DISABLE);
   //h3lis331dl_hp_path_set(&dev_ctx, H3LIS331DL_HP_ON_OUT);
   //h3lis331dl_hp_reset_get(&dev_ctx);
   /* Set Output Data Rate */
-  h3lis331dl_data_rate_set(&dev_ctx, H3LIS331DL_ODR_400Hz);
+  h3lis331dl_data_rate_set(&dev_ctx, H3LIS331DL_ODR_1kHz);
 
 
 

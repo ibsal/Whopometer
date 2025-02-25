@@ -27,11 +27,11 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   ALLOC
  11 .ARM.attributes 00000029  00000000  00000000  0000b358  2**0
                   CONTENTS, READONLY
- 12 .debug_info   0001f724  00000000  00000000  0000b381  2**0
+ 12 .debug_info   0001f723  00000000  00000000  0000b381  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 13 .debug_abbrev 000051f3  00000000  00000000  0002aaa5  2**0
+ 13 .debug_abbrev 000051f3  00000000  00000000  0002aaa4  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 14 .debug_loclists 0000c7c0  00000000  00000000  0002fc98  2**0
+ 14 .debug_loclists 0000c7c0  00000000  00000000  0002fc97  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
  15 .debug_aranges 000013d0  00000000  00000000  0003c458  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
@@ -1895,8 +1895,8 @@ void Error_Handler(void)
  8001178:	4629      	mov	r1, r5
  800117a:	a80b      	add	r0, sp, #44	@ 0x2c
  800117c:	f7ff fe9a 	bl	8000eb4 <h3lis331dl_block_data_update_set>
-  h3lis331dl_full_scale_set(&dev_ctx, H3LIS331DL_100g);
- 8001180:	4631      	mov	r1, r6
+  h3lis331dl_full_scale_set(&dev_ctx, H3LIS331DL_400g);
+ 8001180:	2103      	movs	r1, #3
  8001182:	a80b      	add	r0, sp, #44	@ 0x2c
  8001184:	f7ff fe7f 	bl	8000e86 <h3lis331dl_full_scale_set>
   h3lis331dl_hp_path_set(&dev_ctx, H3LIS331DL_HP_DISABLE);
@@ -1907,8 +1907,8 @@ void Error_Handler(void)
   h3lis331dl_hp_path_set(&dev_ctx, H3LIS331DL_HP_DISABLE);
  8001190:	a80b      	add	r0, sp, #44	@ 0x2c
  8001192:	f7ff fed2 	bl	8000f3a <h3lis331dl_hp_path_set>
-  h3lis331dl_data_rate_set(&dev_ctx, H3LIS331DL_ODR_400Hz);
- 8001196:	2121      	movs	r1, #33	@ 0x21
+  h3lis331dl_data_rate_set(&dev_ctx, H3LIS331DL_ODR_1kHz);
+ 8001196:	2131      	movs	r1, #49	@ 0x31
  8001198:	a80b      	add	r0, sp, #44	@ 0x2c
  800119a:	f7ff fe57 	bl	8000e4c <h3lis331dl_data_rate_set>
   fresult = f_mount(&fs, "/", 1); //Mount the file system
