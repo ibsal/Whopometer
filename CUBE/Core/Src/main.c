@@ -190,7 +190,7 @@ int main(void)
   char acm[100];
 
   /* Read samples in polling mode (no int) */
-  while (HAL_GetTick()<10*1000.0) {
+  while (HAL_GetTick()<=180*1000.0) {
     /* Read output only if new value is available */
     h3lis331dl_reg_t reg;
     h3lis331dl_status_reg_get(&dev_ctx, &reg.status_reg);
@@ -207,7 +207,7 @@ int main(void)
                              data_raw_acceleration[1]);
       acceleration_mg[2] = h3lis331dl_from_fs100_to_mg(
                              data_raw_acceleration[2]);
-      sprintf(acm, "%.2f, %.2f, %.2f, %.2f\n", 0.001*HAL_GetTick(),acceleration_mg[0], acceleration_mg[1], acceleration_mg[2]);
+      sprintf(acm, "%.3f, %.3f, %.3f, %.3f\n", 0.001*HAL_GetTick(),acceleration_mg[0], acceleration_mg[1], acceleration_mg[2]);
       //CDC_Transmit_FS(acm, strlen(acm));
       f_puts(acm, &fil);
     }
