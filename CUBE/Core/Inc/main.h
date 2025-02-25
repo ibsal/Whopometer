@@ -26,6 +26,7 @@
 extern "C" {
 #endif
 
+#define SD_SPI_HANDLE hspi1
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f1xx_hal.h"
 
