@@ -83,12 +83,14 @@ static int32_t platform_write(void *handle, uint8_t reg, const uint8_t *bufp, ui
 	reg |= 0x80;
 	HAL_I2C_Mem_Write(handle, H3LIS331DL_I2C_ADD_L, reg,
 	                    I2C_MEMADD_SIZE_8BIT, (uint8_t*) bufp, len, 1000);
+	return 0;
 }
 
 static int32_t platform_read(void *handle, uint8_t reg, uint8_t *bufp, uint16_t len){
 	reg |= 0x80;
 	HAL_I2C_Mem_Read(handle, H3LIS331DL_I2C_ADD_L, reg,
 	                   I2C_MEMADD_SIZE_8BIT, bufp, len, 1000);
+	return 0;
 }
 
 /** Optional (may be required by driver) **/
@@ -137,8 +139,7 @@ int main(void)
   HAL_Delay(1000);
 
   stmdev_ctx_t dev_ctx;
-  uint8_t *ctxbegin = "/nBeggining CTX stuff/n";
-  CDC_Transmit_FS(ctxbegin, strlen(ctxbegin));
+
 
   /* Initialize mems driver interface */
   dev_ctx.write_reg = platform_write;
@@ -147,23 +148,19 @@ int main(void)
   dev_ctx.handle = &SENSOR_BUS;
   whoamI = 0;
 
-  HAL_Delay(1000);
-  uint8_t *idgen = "/nBeggining ID Get stuff/n";
-  CDC_Transmit_FS(idgen, strlen(idgen));
+
 
   h3lis331dl_device_id_get(&dev_ctx, &whoamI);
   if ( whoamI != H3LIS331DL_ID ){
  	 while(1){
- 		uint8_t *yikes = "/nWho am I is not H3LIS331DL_ID /n";
+ 		uint8_t *yikes = "\nWho am I is not H3LIS331DL_ID \n";
  		CDC_Transmit_FS(yikes, strlen(yikes));
  		HAL_Delay(100);
  		CDC_Transmit_FS((uint8_t *) whoamI, strlen(whoamI));
  		HAL_Delay(100);
  	 }
   }
-  HAL_Delay(1000);
-  uint8_t *idgenyes = "/nID Get was succesful, moving on /n";
-  CDC_Transmit_FS(idgenyes, strlen(idgenyes));
+
 
   /* Enable Block Data Update */
   h3lis331dl_block_data_update_set(&dev_ctx, PROPERTY_ENABLE);
@@ -174,18 +171,19 @@ int main(void)
   //h3lis331dl_hp_path_set(&dev_ctx, H3LIS331DL_HP_ON_OUT);
   //h3lis331dl_hp_reset_get(&dev_ctx);
   /* Set Output Data Rate */
-  h3lis331dl_data_rate_set(&dev_ctx, H3LIS331DL_ODR_5Hz);
+  h3lis331dl_data_rate_set(&dev_ctx, H3LIS331DL_ODR_400Hz);
 
-  HAL_Delay(1000);
-   uint8_t *configed = "/nDevice Config Done/n";
-   CDC_Transmit_FS(configed, strlen(configed));
+
+   char acm[100];
 
   /* Read samples in polling mode (no int) */
   while (1) {
     /* Read output only if new value is available */
     h3lis331dl_reg_t reg;
     h3lis331dl_status_reg_get(&dev_ctx, &reg.status_reg);
-
+	//HAL_Delay(1);
+	//uint8_t *looped = "\nLooping that\n";
+	//CDC_Transmit_FS(looped, strlen(looped));
     if (reg.status_reg.zyxda) {
       /* Read acceleration data */
       memset(data_raw_acceleration, 0x00, 3 * sizeof(int16_t));
@@ -196,9 +194,9 @@ int main(void)
                              data_raw_acceleration[1]);
       acceleration_mg[2] = h3lis331dl_from_fs100_to_mg(
                              data_raw_acceleration[2]);
-      char buffer[20];
-      sprintf(buffer, "X %.2f Y %.2f Z %.2f", acceleration_mg[0], acceleration_mg[1], acceleration_mg[2]);
-      CDC_Transmit_FS(buffer, strlen(buffer));
+      sprintf(acm, "\n%.2f %.2f %.2f", acceleration_mg[0], acceleration_mg[1], acceleration_mg[2]);
+      CDC_Transmit_FS(acm, strlen(acm));
+      //HAL_Delay(1);
     }
 
 }
